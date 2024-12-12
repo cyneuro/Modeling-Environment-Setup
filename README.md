@@ -15,7 +15,7 @@ bash Miniconda3-latest-Linux-x86_64.sh
 ```
 ### Then close out of any terminal you have open. If you are doing this over SSH then close the window. If local then restart computer. Then we will download the evironment file.
 ```
-wget -O environment.yml https://github.com/cyneuro/Modeling-Environment-/blob/main/environment.yml
+wget https://raw.githubusercontent.com/cyneuro/Modeling-Environment-/refs/heads/main/environment.yml
 ```
 ### Now we will create the conda environment
 ``` 
