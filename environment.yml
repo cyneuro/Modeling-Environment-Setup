@@ -3,12 +3,9 @@ channels:
   - defaults
 dependencies:
   - python=3.10
-  - jupyter
-  - matplotlib
-  - h5py
   - pywavelets
-  - seaborn
   - statsmodels
-  - mpi4py
-  - conda-forge::neuron=8.2.4
+  - jupyter
+  - seaborn
+  - matplotlib
 prefix: /home/gjgpb9/miniconda3/envs/NME
