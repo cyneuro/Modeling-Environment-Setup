@@ -28,8 +28,11 @@ conda activate NME
 ### Some packages do not install using Conda, so we will use pip to finish the install process.
 ``` 
 pip install bmtk
+```
+### There is a pip install for BMTool but the install from GitHub works better
 ``` 
-``` 
-pip install bmtool
+git clone https://github.com/cyneuro/bmtool.git
+cd bmtool
+python setup.py develop
 ``` 
 ### This should be a good starting point and have every package someone needs to get started with neural modeling. 
