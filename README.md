@@ -26,6 +26,8 @@ conda env create -f environment.yml
 conda activate NME
 ``` 
 ### Some packages do not install using Conda, so we will use pip to finish the install process.
+
+### This line is only needed if you plan on doing runs in parallel. You should have a version of mpi loaded before install for example mpich or openmpi. 
 ```
 pip install mpi4py-mpich
 ```
