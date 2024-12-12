@@ -25,10 +25,7 @@ conda env create -f environment.yml
 ``` 
 conda activate NME
 ``` 
-### Some packagses do not install well using conda so we will use pip to finish the install
-``` 
-pip install neuron==8.2.4
-``` 
+### Some packages do not install using Conda, so we will use pip to finish the install process.
 ``` 
 pip install bmtk
 ``` 
