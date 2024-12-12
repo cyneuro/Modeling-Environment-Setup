@@ -26,6 +26,9 @@ conda env create -f environment.yml
 conda activate NME
 ``` 
 ### Some packages do not install using Conda, so we will use pip to finish the install process.
+```
+pip install mpi4py-mpich
+```
 ``` 
 pip install bmtk
 ```
