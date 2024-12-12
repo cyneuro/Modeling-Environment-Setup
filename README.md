@@ -13,7 +13,26 @@ chmod +x Miniconda3-latest-Linux-x86_64.sh
 ```
 bash Miniconda3-latest-Linux-x86_64.sh 
 ```
-### Then close out of any terminal you have open. If you are doing this over SSH then close the window. If local then restart computer.
+### Then close out of any terminal you have open. If you are doing this over SSH then close the window. If local then restart computer. Then we will download the evironment file.
 ```
-wget -O environment.yml raw-link-to-file
+wget -O environment.yml https://github.com/cyneuro/Modeling-Environment-/blob/main/environment.yml
 ```
+### Now we will create the conda environment
+``` 
+conda env create -f environment.yml
+```
+### Now you will be able to activate the anaconda environment using the command 
+``` 
+conda activate bmtk
+``` 
+### Some packagses do not install well using conda so we will use pip to finish the install
+``` 
+pip install neuron==8.2.4
+``` 
+``` 
+pip install bmtk
+``` 
+``` 
+pip install bmtool
+``` 
+### This should be a good starting point and have every package someone needs to get started with neural modeling. 
