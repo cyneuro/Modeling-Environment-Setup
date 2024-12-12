@@ -21,9 +21,9 @@ curl -OL https://raw.githubusercontent.com/cyneuro/Modeling-Environment-/refs/he
 ``` 
 conda env create -f environment.yml
 ```
-### Now you will be able to activate the anaconda environment using the command 
+### Now you will be able to activate the anaconda environment using the command (NME stands for Neural Modeling Environment)
 ``` 
-conda activate bmtk
+conda activate NME
 ``` 
 ### Some packagses do not install well using conda so we will use pip to finish the install
 ``` 
