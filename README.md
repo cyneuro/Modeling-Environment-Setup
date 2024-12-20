@@ -13,7 +13,7 @@ chmod +x Miniconda3-latest-Linux-x86_64.sh
 ```
 bash Miniconda3-latest-Linux-x86_64.sh 
 ```
-### Then close out of any terminal you have open. If you are doing this over SSH then close the window. If local then restart computer. Then we will download the evironment file.
+### Then close out of any terminal you have open. If you are doing this over SSH then close the window. If local then restart computer. Then we will download the evironment file. If this command fails you can download the environmnet.yml file that is in this repo. It is the same file! Just make sure the file is in your working directory when running the next command.
 ```
 curl -OL https://raw.githubusercontent.com/cyneuro/Modeling-Environment-Setup/refs/heads/main/environment.yml
 ```
