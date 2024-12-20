@@ -31,10 +31,15 @@ conda activate NME
 ```
 pip install mpi4py-mpich
 ```
+### Neuron will soon be switching over to version 9.0 and some files won't work correctly in this version. It may be best to use the 8.2.4 version.
+```
+pip install neuron==8.2.4
+```
+### The pip install of BMTK is not always the most up to date. If you think you need the most up to date version you can install from their [GitHub](https://github.com/AllenInstitute/bmtk)
 ``` 
 pip install bmtk
 ```
-### There is a pip install for BMTool but the install from GitHub works better
+### There is a pip install for BMTool but the install from GitHub works better for now.
 ``` 
 git clone https://github.com/cyneuro/bmtool.git
 cd bmtool
