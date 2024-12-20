@@ -1,5 +1,5 @@
-# Modeling-Environment-
-## This is a list of commands that should be ran in order to set up the environment
+# Modeling-Environment-Setup
+## This is a list of commands that should be ran in order to set up a conda environment 
 
 ### First download miniconda
 ```
