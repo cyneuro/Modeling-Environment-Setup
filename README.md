@@ -39,10 +39,8 @@ pip install neuron==8.2.4
 ``` 
 pip install bmtk
 ```
-### There is a pip install for BMTool but the install from GitHub works better for now.
+### Then we will install BMTOOL
 ``` 
-git clone https://github.com/cyneuro/bmtool.git
-cd bmtool
-python setup.py develop
+pip install bmtool
 ``` 
 ### This should be a good starting point and have every package someone needs to get started with neural modeling. 
