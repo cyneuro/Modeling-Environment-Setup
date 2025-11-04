@@ -27,7 +27,7 @@ conda activate NME
 ``` 
 ### Some packages do not install using Conda, so we will use pip to finish the install process.
 
-### This line is only needed if you plan on doing runs in parallel. You should have a version of mpi loaded before install for example mpich or openmpi. 
+### This line is only needed if you plan on doing runs in parallel. You should have a version of mpi loaded before install for example mpich or openmpi. On most HPC devices you can see modules with module avail
 ```
 pip install mpi4py-mpich
 ```
