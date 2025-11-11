@@ -42,5 +42,6 @@ pip install bmtk
 ### Then we will install BMTOOL
 ``` 
 pip install bmtool
-``` 
+```
+If you plan on making changes to bmtool, then you should go to the repo and install from there [bmtool link](https://github.com/cyneuro/bmtool)
 ### This should be a good starting point and have every package someone needs to get started with neural modeling. 
