@@ -9,3 +9,4 @@ dependencies:
   - seaborn
   - matplotlib
   - pandas
+  - scipy
