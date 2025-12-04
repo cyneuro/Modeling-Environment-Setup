@@ -10,7 +10,7 @@ This guide covers getting started with neural modeling on Mizzou's Hellbender HP
   - [OnDemand Web Interface](#method-1-ondemand-web-interface)
   - [SSH Access via VS Code](#method-2-ssh-access-via-vs-code)
     - [Automating node allocation with helper scripts](#automating-node-allocation-with-helper-scripts)
-- [Environment Setup](#environment-setup)
+- [Environment Setup](./python_environment_setup.md)
 - [Using Slurm on Hellbender](#using-slurm-on-hellbender)
 - [Best Practices](#best-practices)
 - [Common Issues](#common-issues)
@@ -171,7 +171,7 @@ After installing the CLI, close and reopen any open terminals so the PATH change
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
     ```
 
-- macOS / Linux (bash): `start_hellbender.sh` (or `start_hellbender_mac.sh` where present)
+- macOS / Linux (bash): `start_hellbender.sh`
 
   - Location: repository root (e.g. `start_hellbender.sh`)
   - Usage (from bash in the repo):
@@ -189,12 +189,6 @@ Your session ends when:
 
 - Your allocated time expires
 - You cancel the job with `scancel <JOBID>`
-
-## Environment Setup
-
-All installation and Python environment setup steps (Miniconda, conda env creation, package installation, NEURON, BMTK, mpi4py, CoreNEURON build notes) live in the consolidated guide `python_environment_setup.md`.
-
-For Hellbender-specific module recommendations or examples, see the consolidated guide and, where needed, the Hellbender wiki.
 
 ## Using Slurm on Hellbender
 
@@ -322,7 +316,6 @@ scontrol show job <JOBID>
 
 **Permission denied errors:**
 
-- Make sure you're in your `data` directory
 - Check file permissions: `ls -la`
 - Scripts need execute permission: `chmod +x script.sh`
 
