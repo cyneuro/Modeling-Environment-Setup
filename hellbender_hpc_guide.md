@@ -2,6 +2,22 @@
 
 This guide covers getting started with neural modeling on Mizzou's Hellbender HPC system.
 
+## Table of contents
+
+- [Prerequisites](#prerequisites)
+- [What You Can Do with Hellbender](#what-you-can-do-with-hellbender)
+- [Access Methods](#access-methods)
+  - [OnDemand Web Interface](#method-1-ondemand-web-interface)
+  - [SSH Access via VS Code](#method-2-ssh-access-via-vs-code)
+    - [Automating node allocation with helper scripts](#automating-node-allocation-with-helper-scripts)
+- [Environment Setup](#environment-setup)
+- [Using Slurm on Hellbender](#using-slurm-on-hellbender)
+- [Best Practices](#best-practices)
+- [Common Issues](#common-issues)
+- [Useful Commands Reference](#useful-commands-reference)
+- [Additional Resources](#additional-resources)
+- [Getting Help](#getting-help)
+
 ## Prerequisites
 
 ### Create Hellbender Account
@@ -9,30 +25,23 @@ This guide covers getting started with neural modeling on Mizzou's Hellbender HP
 Apply for an account through the [HPC Service Request Form](https://missouri.service-now.com/sp?id=sc_cat_item&sys_id=your_form_id).
 
 **Before starting:**
+You may want to review these resources for background.
 
 - Understand basic HPC concepts: [Guide to HPC - Nodes and Processors](https://kinda-technical.com/hpc-guide)
 - Review the [Hellbender Wiki](https://wiki.rnet.missouri.edu/confluence/display/HPCC/Hellbender)
-
-## What You Can Do with Hellbender
-
-By allocating multiple nodes, you can:
-
-- Run large, intensive simulations (e.g., NEURON models with thousands of neurons) much faster
-- Perform parameter sweeps where each node tests different values simultaneously
-- Parallelize computations across many cores
 
 ## Access Methods
 
 Hellbender can be accessed through a web interface or via SSH. Choose based on your needs:
 
-| Method         | Best For                                           | Parallel Processing |
-| -------------- | -------------------------------------------------- | ------------------- |
-| OnDemand (Web) | Simple jobs, learning, single-node work            | Limited             |
-| SSH (VS Code)  | Complex jobs, multi-node work, parallel processing | Full support        |
+| Method         | Best For                                              | Parallel Processing |
+| -------------- | ----------------------------------------------------- | ------------------- |
+| OnDemand (Web) | Learning, single-node or small-scale work             | Limited             |
+| SSH (VS Code)  | Complex, multi-node work and submitting jobs to Slurm | Full support        |
 
 ## Method 1: OnDemand Web Interface
 
-Perfect for getting started quickly or running simple simulations.
+Perfect for getting started quickly or running small, single-node analyses.
 
 ### Setup Steps
 
@@ -51,11 +60,8 @@ Your directory structure:
 
 ```
 /home/[pawprint]/
-├── .ssh/           # SSH configuration
-└── data/           # Your working directory (use this!)
+└── data/           # Your working directory by default
 ```
-
-**Important:** All your code should be stored and run in the `data` folder.
 
 To open your data folder:
 
@@ -112,7 +118,7 @@ Replace `[your_pawprint]` with your actual pawprint.
 ssh-copy-id [your_pawprint]@hellbender-login.rnet.missouri.edu
 ```
 
-**On Windows (run in PowerShell first, then use the command):**
+**On Windows (paste the function into PowerShell, then run the command):**
 
 ```powershell
 function ssh-copy-id([string]$userAtMachine){
@@ -134,70 +140,50 @@ ssh-copy-id [your_pawprint]@hellbender-login.rnet.missouri.edu
 
 ### Regular Workflow (Every Session)
 
-#### Step 1: SSH into Hellbender
+Do not run VS Code on Hellbender's login node. First allocate a compute node, then connect to that node with VS Code. The repository includes helper scripts to automate this allocation-and-connect flow. Make sure your SSH configuration and keys are set up before using the scripts.
 
-Open your terminal and connect:
+Also make sure the `code` CLI is available in your local shell (the scripts use it to open VS Code):
 
-```bash
-ssh [your_pawprint]@hellbender-login.rnet.missouri.edu
-```
+- macOS: Open VS Code → Command Palette (Cmd + Shift + P) → run: Shell Command: Install 'code' command in PATH
+- Windows: Open VS Code → Command Palette (Ctrl + Shift + P) → run: Shell Command: Install 'code' command in PATH (by default the windows code command should work so you may not need to do this)
 
-Enter your SSH key passphrase when prompted. You should see a colorful "Welcome to Hellbender" message.
+After installing the CLI, close and reopen any open terminals so the PATH change takes effect.
 
-#### Step 2: Allocate a Compute Node
+- Windows (PowerShell): `start_hellbender.ps1`
 
-**Critical:** You are currently on a login node. **Never run computations here!** Running code on login nodes can crash the system and may result in account suspension.
+  - Location: repository root `start_hellbender.ps1`
+  - Usage (from PowerShell in the repo):
 
-Request a compute node:
+    ```powershell
+    # Example: default host and settings (requests 1 hour by default)
+    .\start_hellbender.ps1
 
-```bash
-salloc --time=1:00:00 --partition=interactive
-```
+    # Example: request 20 minutes instead of 1 hour
+    .\start_hellbender.ps1 -Time '0:20:00'
+    ```
 
-This requests 1 node for 1 hour. Adjust as needed:
+  - Notes: PowerShell execution policies may block scripts by default. You can run one-off with a bypass:
+    ```powershell
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\start_hellbender.ps1
+    ```
+    or set a different Policy setting
+    ```powershell
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+    ```
 
-- Maximum time: 48 hours
-- Longer requests may take longer to allocate
-- Jobs may be preempted by paid subscriptions
+- macOS / Linux (bash): `start_hellbender.sh` (or `start_hellbender_mac.sh` where present)
 
-**Wait for allocation.** The output will show: `nodes c### are ready for job`
+  - Location: repository root (e.g. `start_hellbender.sh`)
+  - Usage (from bash in the repo):
 
-Note your node ID (e.g., `c059`, `c123`).
+    ```bash
+    # Change to the repository directory (replace with your actual path)
+    cd /path/to/Modeling-Environment-Setup
 
-#### Step 3: Check Your Nodes
-
-View all your active nodes:
-
-```bash
-squeue -u [your_pawprint]
-```
-
-This shows:
-
-- **Job ID:** Unique identifier for each job
-- **Node ID(s):** Which nodes you're using (e.g., `c059`)
-- **Time:** How long the job has been running
-- **Status:** Current state (R = running, PD = pending)
-
-#### Step 4: Connect to Your Node via VS Code
-
-1. Open VS Code
-2. Click the small icon in the **bottom-left corner**
-3. Select "Connect to Host"
-4. Type your node ID (e.g., `c059`)
-5. Enter your SSH passphrase when prompted (may ask multiple times)
-
-#### Step 5: Open Your Working Directory
-
-1. Go to: File > Open Folder
-2. Enter path: `/home/[your_pawprint]/data`
-3. Click OK
-
-You're now working on a compute node! You can:
-
-- Clone repositories: `git clone ...`
-- Run simulations: `python run_network.py`
-- Use MPI: `mpiexec -n 4 python parallel_sim.py`
+    # Make the script executable and run it (requests 1 hour by default)
+    chmod +x start_hellbender.sh
+    ./start_hellbender.sh
+    ```
 
 Your session ends when:
 
@@ -256,6 +242,12 @@ sbatch run_job.sh
 squeue -u $USER
 ```
 
+or
+
+```bash
+squeue --me
+```
+
 **Cancel job:**
 
 ```bash
@@ -308,13 +300,12 @@ scontrol show job <JOBID>
 
 **"Connection refused" or can't connect:**
 
-- Verify you're on the MU network or VPN
 - Check that your SSH key is properly set up
 - Ensure you allocated a compute node first
 
 **"No space left on device":**
 
-- Check your quota: `quota -s`
+- Check your space: `du -sh .`
 - Clean up old files
 - Contact support if you need more space
 
@@ -348,36 +339,9 @@ module load gcc/12.2.1
 module list
 
 # Check disk usage
-du -sh /home/[pawprint]/data
-
-# Check your quota
-quota -s
-
-# Monitor resource usage
-top
-htop  # if available
+du -sh DIR_PATH_TO_CHECK
 ```
 
 ## Additional Resources
 
-- [Hellbender Wiki](https://wiki.rnet.missouri.edu/confluence/display/HPCC/Hellbender)
-- [Hellbender Office Hours](https://calendly.com/hellbender-office-hours) - Get help from HPC staff
 - [Slurm Documentation](https://slurm.schedmd.com/documentation.html)
-- [MU HPC Support](mailto:hpc-support@missouri.edu)
-
-## Getting Help
-
-**Hellbender Office Hours:**
-
-- Best for: General HPC questions, job optimization, troubleshooting
-- Schedule via the wiki
-
-**Lab Resources:**
-
-- Check lab documentation for model-specific guidance
-- Ask lab members about tested workflows
-
-**Documentation:**
-
-- Always check the Hellbender wiki first
-- Module availability and names may change over time
