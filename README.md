@@ -7,4 +7,6 @@ This repository contains the main guides and quick references for setting up mod
 
 - [expanse_hpc_guide.md](./expanse_hpc_guide.md) — Expanse HPC quick-start: SSH access, VS Code setup, Slurm job submission, and environment modules.
 
+- [lab_server_guide.md](./lab_server_guide.md) — Lab server quick-start: SSH access, VS Code setup, and environment modules.
+
 - [globus_guide.md](./globus_guide.md) — Globus data transfer guide: Account setup, managed endpoints, personal endpoints, and collections for lab and Hellbender.
