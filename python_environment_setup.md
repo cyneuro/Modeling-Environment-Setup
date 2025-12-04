@@ -55,6 +55,22 @@ module load gcc/12.2.1
 module load intel_mpi
 ```
 
+For Expanse:
+
+```bash
+module purge
+module load slurm
+module load cpu/0.17.3b
+module load gcc/10.2.0/npcyll4
+module load openmpi/4.1.1
+```
+
+For lab server:
+
+```bash
+module load mpich-x86_64-nopy
+```
+
 For other systems, check available modules:
 
 ```bash
