@@ -2,23 +2,36 @@
 
 # Script to allocate Hellbender resources and connect VS Code
 
+# Default values
+TIME="1:00:00"
+PARTITION="interactive"
+
+# Parse options
+while getopts "t:p:" opt; do
+    case $opt in
+        t) TIME="$OPTARG" ;;
+        p) PARTITION="$OPTARG" ;;
+        *) echo "Usage: $0 [-t time] [-p partition]" >&2; exit 1 ;;
+    esac
+done
+
 echo "Requesting resources from Hellbender..."
 
 # Get current job count before allocation
 initial_jobs=$(ssh hellbender "squeue -u \$USER -h | wc -l")
 
 # Run salloc in the background on hellbender and keep it alive
-ssh -f hellbender "salloc --time=1:00:00 --partition=interactive sleep 3600" > /dev/null 2>&1 &
+ssh -f hellbender "salloc --time=$TIME --partition=$PARTITION sleep 3600" > /dev/null 2>&1 &
 
 # Wait a moment for allocation to start
 sleep 2
 
-# Check for the NEW allocated node (interactive partition)
+# Check for the NEW allocated node ($PARTITION partition)
 echo "Waiting for node allocation..."
 for i in {1..30}; do
     # Get the most recent interactive job
-    node=$(ssh hellbender "squeue -u \$USER -h -p interactive -o '%N' | head -n 1")
-    jobid=$(ssh hellbender "squeue -u \$USER -h -p interactive -o '%i' | head -n 1")
+    node=$(ssh hellbender "squeue -u \$USER -h -p $PARTITION -o '%N' | head -n 1")
+    jobid=$(ssh hellbender "squeue -u \$USER -h -p $PARTITION -o '%i' | head -n 1")
     
     # Check if we have a new job
     current_jobs=$(ssh hellbender "squeue -u \$USER -h | wc -l")
@@ -37,7 +50,7 @@ for i in {1..30}; do
         echo ""
         echo "✓ VS Code should now be connecting to $node"
         echo "✓ Click 'Open Folder' in VS Code to select your working directory"
-        echo "✓ Your session will expire in 1 hour"
+        echo "✓ Your session will expire in $TIME"
         echo ""
         echo "Current jobs:"
         ssh hellbender "squeue -u \$USER"
