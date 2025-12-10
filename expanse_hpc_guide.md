@@ -7,6 +7,7 @@ This guide covers getting started with neural modeling on SDSC's Expanse HPC sys
 - [Prerequisites](#prerequisites)
 - [Access Methods](#access-methods)
   - [SSH Access via VS Code](#ssh-access-via-vs-code)
+  - [Interactive VS Code Sessions on Compute Nodes](#interactive-vs-code-sessions-on-compute-nodes)
 - [Environment Setup](./python_environment_setup.md)
 - [Using Slurm on Expanse](#using-slurm-on-expanse)
 - [Best Practices](#best-practices)
@@ -84,6 +85,49 @@ Then run:
 ```powershell
 ssh-copy-id USERNAME@login.expanse.sdsc.edu
 ```
+
+### Interactive VS Code Sessions on Compute Nodes
+
+For interactive development on compute nodes (recommended over running on login nodes), use the `start_expanse.sh` script to allocate resources and connect VS Code remotely.
+
+#### Prerequisites
+
+- Ensure your `~/.ssh/config` includes the following (replace `USERNAME` with your ACCESS username):
+
+```
+Host expanse
+    HostName login.expanse.sdsc.edu
+    User USERNAME
+    ControlMaster auto
+    ControlPath ~/.ssh/master-%r@%h:%p
+    ControlPersist 10m
+
+Host exp-*
+    HostName %h
+    User USERNAME
+    ProxyCommand ssh expanse -W %h:%p
+```
+
+#### Usage
+
+1. Make the script executable: `chmod +x start_expanse.sh`
+2. Run the script: `./start_expanse.sh`
+3. Enter your TOTP code when prompted.
+4. The script will allocate a node in the `shared` partition and open VS Code connected to it.
+
+#### Options
+
+- `-t TIME`: Set allocation time (default: 1:00:00)
+- `-p PARTITION`: Set partition (default: shared)
+- `-a ACCOUNT`: Set account (default: umc113)
+
+Example: `./start_expanse.sh -t 0:30:00 -p shared`
+
+#### Notes
+
+- VS Code setup may take several minutes. For faster job submission and monitoring, use the command line with `sbatch` for batch jobs or `srun` for interactive sessions.
+- The allocation runs `sleep` in the background to keep resources active.
+- Cancel jobs with: `ssh expanse 'scancel JOBID'`
 
 ## Environment Setup
 
