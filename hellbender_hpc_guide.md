@@ -12,6 +12,7 @@ This guide covers getting started with neural modeling on Mizzou's Hellbender HP
     - [Automating node allocation with helper scripts](#automating-node-allocation-with-helper-scripts)
 - [Environment Setup](./python_environment_setup.md)
 - [Using Slurm on Hellbender](#using-slurm-on-hellbender)
+- [File Transfer](#file-transfer)
 - [Best Practices](#best-practices)
 - [Common Issues](#common-issues)
 - [Useful Commands Reference](#useful-commands-reference)
@@ -252,6 +253,18 @@ scancel <JOBID>
 
 ```bash
 scontrol show job <JOBID>
+```
+
+## File Transfer
+
+For transferring files to and from Hellbender, use Globus for large or frequent transfers. See the [Globus Guide](./globus_guide.md) for setup and usage instructions.
+
+For smaller transfers or when using rsync/scp over SSH, connect to the high-speed data transfer node `hellbender-dtn.rnet.missouri.edu` instead of the default login node `hellbender.rnet.missouri.edu` for faster transfers.
+
+Example rsync command:
+
+```bash
+rsync -avz /local/path username@hellbender-dtn.rnet.missouri.edu:/remote/path
 ```
 
 ## Best Practices
