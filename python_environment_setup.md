@@ -83,6 +83,11 @@ Look for modules with names like `openmpi`, `intel_mpi` or `mpich`.
 
 Install the required packages using pip:
 
+I recommand running this command first and then the next pip command. I think this is the most stable neuron version.
+```bash
+pip install neuron==8.2.4 
+```
+
 ```bash
 pip install jupyter pandas openmpi mpi4py bmtk bmtool scipy seaborn
 ```
