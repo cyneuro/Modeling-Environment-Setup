@@ -9,7 +9,8 @@ This guide covers getting started with neural modeling on Mizzou's Hellbender HP
 - [Access Methods](#access-methods)
   - [OnDemand Web Interface](#method-1-ondemand-web-interface)
   - [SSH Access via VS Code](#method-2-ssh-access-via-vs-code)
-    - [Automating node allocation with helper scripts](#automating-node-allocation-with-helper-scripts)
+    - [Manual Node Allocation and SSH Connection](#manual-node-allocation-and-ssh-connection)
+    - [Automatic Node Allocation and Connection](#automatic-node-allocation-and-connection)
 - [Environment Setup](./python_environment_setup.md)
 - [Using Slurm on Hellbender](#using-slurm-on-hellbender)
 - [File Transfer](#file-transfer)
@@ -139,7 +140,27 @@ Then run:
 ssh-copy-id [your_pawprint]@hellbender-login.rnet.missouri.edu
 ```
 
-### Regular Workflow (Every Session)
+### Manual Node Allocation and SSH Connection
+
+For manual control over node allocation and connection:
+
+1. **Allocate resources** (example for 1 hour on interactive node with 1 core):
+
+   ```bash
+   salloc --time=1:00:00 --partition=interactive
+   ```
+
+   This will output something like: "Nodes c140 are ready for job"
+
+2. **Connect via VS Code**:
+   - Click the remote button in the bottom left of VS Code
+   - Select "Connect current window to host"
+   - Enter the allocated node (e.g., `c140`) as the host
+   - **Do not connect to `hellbender`** directly, as this connects to the login node and may trigger warnings
+
+From there, you can use VS Code normally on the allocated compute node.
+
+### Automatic Node Allocation and Connection
 
 Do not run VS Code on Hellbender's login node. First allocate a compute node, then connect to that node with VS Code. The repository includes helper scripts to automate this allocation-and-connect flow. Make sure your SSH configuration and keys are set up before using the scripts.
 
@@ -151,7 +172,6 @@ Also make sure the `code` CLI is available in your local shell (the scripts use 
 After installing the CLI, close and reopen any open terminals so the PATH change takes effect.
 
 - Windows (PowerShell): `start_hellbender.ps1`
-
   - Location: repository root `start_hellbender.ps1`
   - Usage (from PowerShell in the repo):
 
@@ -173,7 +193,6 @@ After installing the CLI, close and reopen any open terminals so the PATH change
     ```
 
 - macOS / Linux (bash): `start_hellbender.sh`
-
   - Location: repository root (e.g. `start_hellbender.sh`)
   - Usage (from bash in the repo):
 
