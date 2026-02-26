@@ -45,7 +45,7 @@ for i in {1..30}; do
         
         # Open VS Code and connect (let user choose folder)
         echo "Opening VS Code and connecting to $node..."
-        code --remote ssh-remote+$node
+        code --new-window --remote ssh-remote+$node
         
         echo ""
         echo "✓ VS Code should now be connecting to $node"
