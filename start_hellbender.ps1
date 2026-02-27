@@ -125,7 +125,7 @@ for ($i = 1; $i -le $PollLoops; $i++) {
         if ($codeCmd) {
             try {
                 $remoteArg = "ssh-remote+$node"
-                & code --remote $remoteArg
+                & code --new-window --remote $remoteArg
             } catch {
                 Write-Host "Failed to launch VS Code via code CLI. Try opening VS Code and connecting to ssh-remote+$node manually." -ForegroundColor Yellow
             }
