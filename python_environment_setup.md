@@ -89,7 +89,7 @@ pip install neuron==8.2.4
 ```
 
 ```bash
-pip install jupyter pandas openmpi mpi4py bmtk bmtool scipy seaborn
+pip install jupyter pandas==2.3.4 openmpi mpi4py bmtk bmtool scipy seaborn
 ```
 
 ### Notes on Packages
