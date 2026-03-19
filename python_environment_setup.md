@@ -51,8 +51,7 @@ Before installing packages, ensure GCC and MPI modules are loaded. This varies b
 For Hellbender:
 
 ```bash
-module load gcc/12.2.1
-module load intel_mpi
+module load openmpi/4.1.5_gcc_12.3.0
 ```
 
 For Expanse:
