@@ -52,7 +52,11 @@ For Hellbender:
 
 ```bash
 module load openmpi/4.1.5_gcc_12.3.0
+export MPI_HOME="$(dirname "$(dirname "$(command -v mpirun)")")"
+export LD_LIBRARY_PATH="$MPI_HOME/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 ```
+
+On some Hellbender setups, loading OpenMPI adds its commands to `PATH` but does not let Python find `libmpi`. The exports above make that library available to `mpi4py`. Environment activation, module loading, and these exports apply to the current shell; repeat them in each new terminal or SSH session unless your personal shell startup already handles them.
 
 For Expanse:
 
@@ -84,8 +88,10 @@ Install the required packages using pip:
 
 I recommand running this command first and then the next pip command. I think this is the most stable neuron version.
 ```bash
-pip install neuron==8.2.4 
+pip install "setuptools==80.9.0" neuron==8.2.4
 ```
+
+NEURON 8.2.4's `nrnivmodl` launcher imports `pkg_resources`. Pinning setuptools to 80.9.0 retains that module and avoids `ModuleNotFoundError: No module named 'pkg_resources'` with newer setuptools releases.
 
 ```bash
 pip install jupyter pandas==2.3.3 mpi4py bmtk bmtool scipy seaborn
